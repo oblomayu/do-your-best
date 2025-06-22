@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do Your Best - Task Manager</title>
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #FF554A;
+        --text: #000000;
+        --bg: #FFFFFF;
+      }
+      body {
+        font-family: 'Kantumruy Pro', sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        margin: 0;
+        padding: 20px;
+      }
+      .start-container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 0 20px;
+      }
+      .branding {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+      .logo {
+        font-size: 3rem;
+        font-weight: 600;
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .tagline {
+        font-size: 1.2rem;
+        color: #666;
+        margin: 0;
+        font-weight: 400;
+      }
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+      }
+      .welcome-card {
+        background: #f8f9fa;
+        padding: 40px 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .welcome-card h2 {
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+      }
+      .features-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 30px 0;
+        text-align: left;
+      }
+      .features-list li {
+        padding: 8px 0;
+        position: relative;
+        padding-left: 25px;
+        font-size: 1rem;
+      }
+      .features-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 4px;
+        font-family: 'Kantumruy Pro', sans-serif;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      .btn-primary:hover {
+        background: #e04a40;
+      }
+      .calendar-preview {
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        text-align: center;
+      }
+      .calendar-preview img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 15px;
+      }
+      .preview-text {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      @media (max-width: 768px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+        .logo {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="start-container">
+        <div class="branding">
+            <h1 class="logo">do your best</h1>
+            <p class="tagline">Manage your tasks effectively</p>
+        </div>
+        
+        <div class="content-grid">
+            <div class="welcome-card">
+                <h2>Welcome to Your Task Manager</h2>
+                <ul class="features-list">
+                    <li>Calendar view for better planning</li>
+                    <li>Set daily, weekly and monthly goals</li>
+                    <li>Track your efficiency and progress</li>
+                    <li>Organize tasks by priority</li>
+                    <li>Simple and intuitive interface</li>
+                </ul>
+                <button id="getStarted" class="btn-primary">GET STARTED</button>
+            </div>
+            
+            <div class="calendar-preview">
+                <img src="assets/images/calendar.png" alt="Calendar Preview">
+                <div class="preview-text">Calendar interface preview</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const getStartedBtn = document.getElementById('getStarted');
+          
+          if (getStartedBtn) {
+            getStartedBtn.addEventListener('click', () => {
+              console.log('Кнопка нажата!'); // Проверка срабатывания
+              window.location.href = './src/pages/login.html'; 
+            });
+          } else {
+            console.error('Кнопка не найдена! Проверьте ID элемента');
+          }
+        });
+    </script>
+</body>
+</html>

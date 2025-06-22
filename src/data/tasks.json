@@ -1,0 +1,74 @@
+{
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Сдать лабораторную работу по алгоритмам",
+            "priority": "high",
+            "dueDate": "2025-06-15",
+            "completed": false
+        },
+        {
+            "id": 2,
+            "title": "Подготовиться к экзамену по математическому анализу",
+            "priority": "high",
+            "dueDate": "2025-06-18",
+            "completed": false
+        },
+        {
+            "id": 3,
+            "title": "Изучить React.js для курсового проекта",
+            "priority": "high",
+            "dueDate": "2025-06-20",
+            "completed": false
+        },
+        {
+            "id": 4,
+            "title": "Сменить график работы в баре на выходные",
+            "priority": "medium",
+            "dueDate": "2025-06-12",
+            "completed": false
+        },
+        {
+            "id": 5,
+            "title": "Сделать презентацию по базам данных",
+            "priority": "medium",
+            "dueDate": "2025-06-16",
+            "completed": false
+        },
+        {
+            "id": 6,
+            "title": "Практика по программированию на Python",
+            "priority": "medium",
+            "dueDate": "2025-06-14",
+            "completed": false
+        },
+        {
+            "id": 7,
+            "title": "Купить учебники на следующий семестр",
+            "priority": "low",
+            "dueDate": "2025-06-25",
+            "completed": false
+        },
+        {
+            "id": 8,
+            "title": "Обновить резюме для стажировки",
+            "priority": "low",
+            "dueDate": "2025-06-22",
+            "completed": false
+        },
+        {
+            "id": 9,
+            "title": "Посетить консультацию по курсовой работе",
+            "priority": "low",
+            "dueDate": "2025-06-19",
+            "completed": false
+        },
+        {
+            "id": 10,
+            "title": "Подготовить отчет по практике",
+            "priority": "low",
+            "dueDate": "2025-06-28",
+            "completed": false
+        }
+    ]
+}

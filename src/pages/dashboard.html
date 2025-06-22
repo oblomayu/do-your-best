@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Do Your Best</title>
+    <!-- Подключение шрифтов -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #FF554A;
+    --text: #000000;
+    --bg: #FFFFFF;
+            --sidebar-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e9ecef;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+  body {
+    font-family: 'Kantumruy Pro', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+            line-height: 1.6;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 30px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 0 30px 30px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: 15px 30px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav a:hover,
+        .sidebar-nav li.active a {
+            background: var(--card-bg);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            background: var(--bg);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dashboard-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-family: 'Kantumruy Pro', sans-serif;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Tasks Container */
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .priority-section {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-top: 4px solid;
+        }
+        
+        .high-priority {
+            border-top-color: var(--danger);
+        }
+        
+        .medium-priority {
+            border-top-color: var(--warning);
+        }
+        
+        .low-priority {
+            border-top-color: var(--success);
+        }
+        
+        .priority-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .tasks-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tasks-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tasks-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+        
+        .task-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .task-text.completed {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        /* Calendar Section */
+        .dashboard-section.hidden {
+            display: none;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .daily-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-header button,
+        .daily-header button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 16px;
+        }
+        
+        .calendar-header h3,
+        .daily-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-day {
+            background: var(--card-bg);
+            padding: 15px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+        }
+        
+        .calendar-day.other-month {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .calendar-day.today {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .day-number {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .day-tasks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+            margin-top: 5px;
+        }
+        
+        .task-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .task-dot.high-priority {
+            background: var(--danger);
+        }
+        
+        .task-dot.medium-priority {
+            background: var(--warning);
+        }
+        
+        .task-dot.low-priority {
+            background: var(--success);
+        }
+        
+        .calendar-day-header {
+    background: var(--primary);
+    color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .task-modal {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: #f8f9fa;
+            color: var(--text);
+        }
+        
+        .task-info {
+            margin-bottom: 20px;
+        }
+        
+        .task-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .task-info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .task-info-label {
+            font-weight: 500;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .task-info-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .priority-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-badge.high {
+            background: #ffe6e6;
+            color: var(--danger);
+        }
+        
+        .priority-badge.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .priority-badge.low {
+            background: #d4edda;
+            color: var(--success);
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-complete {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+    font-family: 'Kantumruy Pro', sans-serif;
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .btn-complete:hover {
+            background: #218838;
+        }
+        
+        .btn-complete.completed {
+            background: #6c757d;
+        }
+        
+        .btn-complete.completed:hover {
+            background: #5a6268;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .tasks-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                font-size: 12px;
+            }
+            
+            .calendar-day {
+                padding: 8px;
+                min-height: 60px;
+            }
+        }
+
+        /* Progress Chart Styles */
+        #progressChartSection {
+            margin-top: 30px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chart-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .chart-month-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chart-month-nav span {
+            font-weight: 500;
+            color: var(--text);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        #progressChart {
+            border-radius: 50%;
+        }
+
+        .chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .chart-percentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .chart-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .chart-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Responsive chart */
+        @media (max-width: 768px) {
+            .chart-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .chart-month-nav {
+                align-self: center;
+            }
+        }
+</style>
+</head>
+<body>
+    <script>
+        // Проверка аутентификации
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else {
+            const user = JSON.parse(currentUser);
+            const predefinedUser = {
+                username: 'oblomayu',
+                email: 'ifunlycld@gmail.com',
+                password: '12345678'
+            };
+            
+            if (user.username !== predefinedUser.username || 
+                user.email !== predefinedUser.email || 
+                user.password !== predefinedUser.password) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">do your best</h1>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#" id="dailyPlanner">Daily Planner</a>
+                    </li>
+                    <li>
+                        <a href="#" id="monthView">Month View</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2 id="currentDate">Today, June 22, 2023</h2>
+                <div class="header-actions">
+                <button id="manageTasks" class="btn-secondary">
+                    <span>Manage Tasks</span>
+                </button>
+                    <button id="logoutBtn" class="btn-secondary">
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Daily Dashboard -->
+            <section id="dailyDashboard" class="dashboard-section">
+                <div class="daily-header">
+                    <button id="prevMonthDaily" class="btn-secondary">&lt;</button>
+                    <h3 id="currentMonthYearDaily">Июнь 2025</h3>
+                    <button id="nextMonthDaily" class="btn-secondary">&gt;</button>
+                </div>
+                
+                <div class="tasks-container">
+                    <div class="priority-section high-priority">
+                        <h3>High Priority</h3>
+                        <ul class="tasks-list" id="highPriorityTasks">
+                            <!-- Tasks will be inserted here by JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="priority-section medium-priority">
+                        <h3>Medium Priority</h3>
+                        <ul class="tasks-list" id="mediumPriorityTasks">
+                            <!-- Tasks will be inserted here by JavaScript -->
+                        </ul>
+                    </div>
+                    
+                    <div class="priority-section low-priority">
+                        <h3>Low Priority</h3>
+                        <ul class="tasks-list" id="lowPriorityTasks">
+                            <!-- Tasks will be inserted here by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Month View (Hidden by default) -->
+            <section id="monthViewSection" class="dashboard-section hidden">
+                <div class="calendar-header">
+                    <button id="prevMonth">&lt;</button>
+                    <h3 id="currentMonthYear">June 2023</h3>
+                    <button id="nextMonth">&gt;</button>
+                </div>
+                
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be generated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Progress Chart Section -->
+            <section id="progressChartSection" class="dashboard-section">
+                <div class="chart-header">
+                    <h3>Monthly Progress</h3>
+                    <div class="chart-month-nav">
+                        <button id="prevChartMonth" class="btn-secondary">&lt;</button>
+                        <span id="chartMonthYear">June 2025</span>
+                        <button id="nextChartMonth" class="btn-secondary">&gt;</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <canvas id="progressChart" width="200" height="200"></canvas>
+                        <div class="chart-center">
+                            <div class="chart-percentage" id="chartPercentage">0%</div>
+                            <div class="chart-label">Completed</div>
+                        </div>
+                    </div>
+                    <div class="chart-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalTasks">0</span>
+                            <span class="stat-label">Total Tasks</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="completedTasks">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="pendingTasks">0</span>
+                            <span class="stat-label">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="task-modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTaskTitle">Название задачи</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="task-info">
+                <div class="task-info-item">
+                    <span class="task-info-label">Приоритет:</span>
+                    <span class="task-info-value">
+                        <span class="priority-badge" id="modalTaskPriority">Высокий</span>
+                    </span>
+                </div>
+                <div class="task-info-item">
+                    <span class="task-info-label">Дата выполнения:</span>
+                    <span class="task-info-value" id="modalTaskDate">15.06.2025</span>
+                </div>
+                <div class="task-info-item">
+                    <span class="task-info-label">Статус:</span>
+                    <span class="task-info-value" id="modalTaskStatus">Не выполнено</span>
+                </div>
+                <div class="task-info-item" id="modalTaskCommentItem" style="display: none;">
+                    <span class="task-info-label">Комментарий:</span>
+                    <span class="task-info-value" id="modalTaskComment">-</span>
+                </div>
+            </div>
+            <div class="task-actions">
+                <button class="btn-complete" id="modalTaskComplete">Отметить как выполненное</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Обработка выхода из системы
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        });
+
+        // Простая загрузка задач без модулей
+        let tasks = [];
+        let currentViewDate = new Date(); // Дата для текущего вида (Daily или Month)
+        let currentChartDate = new Date(); // Дата для диаграммы
+        let currentModalTask = null; // Текущая задача в модальном окне
+        
+        async function loadTasks() {
+            try {
+                const response = await fetch('../data/tasks.json');
+                const data = await response.json();
+                tasks = data.tasks || [];
+                
+                // Загружаем дополнительные задачи из localStorage
+                const localTasks = localStorage.getItem('tasks');
+                if (localTasks) {
+                    const localTasksArray = JSON.parse(localTasks);
+                    // Объединяем задачи, избегая дублирования по ID
+                    const existingIds = new Set(tasks.map(task => task.id));
+                    localTasksArray.forEach(task => {
+                        if (!existingIds.has(task.id)) {
+                            tasks.push(task);
+                        }
+                    });
+                }
+                
+                renderTasks();
+                renderCalendar();
+                updateMonthHeaders();
+                initChart();
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                // Fallback tasks
+                tasks = [
+                    {
+                        "id": 1,
+                        "title": "Сдать лабораторную работу по алгоритмам",
+                        "priority": "high",
+                        "dueDate": "2025-06-15",
+                        "completed": false
+                    },
+                    {
+                        "id": 2,
+                        "title": "Подготовиться к экзамену по математическому анализу",
+                        "priority": "high",
+                        "dueDate": "2025-06-18",
+                        "completed": false
+                    },
+                    {
+                        "id": 3,
+                        "title": "Изучить React.js для курсового проекта",
+                        "priority": "high",
+                        "dueDate": "2025-06-20",
+                        "completed": false
+                    },
+                    {
+                        "id": 4,
+                        "title": "Сменить график работы в баре на выходные",
+                        "priority": "medium",
+                        "dueDate": "2025-06-12",
+                        "completed": false
+                    },
+                    {
+                        "id": 5,
+                        "title": "Сделать презентацию по базам данных",
+                        "priority": "medium",
+                        "dueDate": "2025-06-16",
+                        "completed": false
+                    },
+                    {
+                        "id": 6,
+                        "title": "Практика по программированию на Python",
+                        "priority": "medium",
+                        "dueDate": "2025-06-14",
+                        "completed": false
+                    },
+                    {
+                        "id": 7,
+                        "title": "Купить учебники на следующий семестр",
+                        "priority": "low",
+                        "dueDate": "2025-06-25",
+                        "completed": false
+                    },
+                    {
+                        "id": 8,
+                        "title": "Обновить резюме для стажировки",
+                        "priority": "low",
+                        "dueDate": "2025-06-22",
+                        "completed": false
+                    },
+                    {
+                        "id": 9,
+                        "title": "Посетить консультацию по курсовой работе",
+                        "priority": "low",
+                        "dueDate": "2025-06-19",
+                        "completed": false
+                    },
+                    {
+                        "id": 10,
+                        "title": "Подготовить отчет по практике",
+                        "priority": "low",
+                        "dueDate": "2025-06-28",
+                        "completed": false
+                    }
+                ];
+                
+                // Загружаем дополнительные задачи из localStorage
+                const localTasks = localStorage.getItem('tasks');
+                if (localTasks) {
+                    const localTasksArray = JSON.parse(localTasks);
+                    const existingIds = new Set(tasks.map(task => task.id));
+                    localTasksArray.forEach(task => {
+                        if (!existingIds.has(task.id)) {
+                            tasks.push(task);
+                        }
+                    });
+                }
+                
+                renderTasks();
+                renderCalendar();
+                updateMonthHeaders();
+                initChart();
+            }
+        }
+
+        function updateMonthHeaders() {
+            const monthNames = [
+                'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            ];
+            
+            const currentMonthYearDaily = document.getElementById('currentMonthYearDaily');
+            const currentMonthYear = document.getElementById('currentMonthYear');
+            
+            if (currentMonthYearDaily) {
+                currentMonthYearDaily.textContent = `${monthNames[currentViewDate.getMonth()]} ${currentViewDate.getFullYear()}`;
+            }
+            
+            if (currentMonthYear) {
+                currentMonthYear.textContent = `${monthNames[currentViewDate.getMonth()]} ${currentViewDate.getFullYear()}`;
+            }
+        }
+
+        function renderTasks() {
+            const highPriorityTasks = document.getElementById('highPriorityTasks');
+            const mediumPriorityTasks = document.getElementById('mediumPriorityTasks');
+            const lowPriorityTasks = document.getElementById('lowPriorityTasks');
+            
+            if (highPriorityTasks) highPriorityTasks.innerHTML = '';
+            if (mediumPriorityTasks) mediumPriorityTasks.innerHTML = '';
+            if (lowPriorityTasks) lowPriorityTasks.innerHTML = '';
+
+            // Фильтруем задачи по текущему месяцу
+            const currentMonthTasks = tasks.filter(task => {
+                const taskDate = new Date(task.dueDate);
+                return taskDate.getMonth() === currentViewDate.getMonth() && 
+                       taskDate.getFullYear() === currentViewDate.getFullYear();
+            });
+
+            const highPriority = currentMonthTasks.filter(task => task.priority === 'high');
+            const mediumPriority = currentMonthTasks.filter(task => task.priority === 'medium');
+            const lowPriority = currentMonthTasks.filter(task => task.priority === 'low');
+
+            renderTaskList(highPriority, highPriorityTasks);
+            renderTaskList(mediumPriority, mediumPriorityTasks);
+            renderTaskList(lowPriority, lowPriorityTasks);
+        }
+
+        function renderTaskList(taskList, container) {
+            if (!container) return;
+            
+            taskList.forEach(task => {
+                const taskElement = document.createElement('li');
+                taskElement.className = 'task-item';
+                taskElement.dataset.id = task.id;
+                
+                const dueDate = new Date(task.dueDate);
+                const formattedDate = dueDate.toLocaleDateString('ru-RU', {
+                    day: '2-digit',
+                    month: '2-digit'
+                });
+                
+                taskElement.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                    <span class="task-text ${task.completed ? 'completed' : ''}">${task.title}</span>
+                    <span class="task-date">${formattedDate}</span>
+                `;
+                
+                container.appendChild(taskElement);
+            });
+        }
+
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            if (!calendarGrid) return;
+
+            calendarGrid.innerHTML = '';
+
+            const firstDay = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth(), 1);
+            const daysInMonth = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth() + 1, 0).getDate();
+
+            const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            dayNames.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day-header';
+                dayElement.textContent = day;
+                calendarGrid.appendChild(dayElement);
+            });
+
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day other-month';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            const today = new Date();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = i;
+                dayElement.appendChild(dayNumber);
+                
+                if (i === today.getDate() && 
+                    currentViewDate.getMonth() === today.getMonth() && 
+                    currentViewDate.getFullYear() === today.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+
+                const dayTasks = getTasksForDay(i);
+                if (dayTasks.length > 0) {
+                    const tasksContainer = document.createElement('div');
+                    tasksContainer.className = 'day-tasks';
+                    
+                    dayTasks.forEach(task => {
+                        const taskDot = document.createElement('div');
+                        taskDot.className = `task-dot ${task.priority}-priority`;
+                        taskDot.title = task.title;
+                        taskDot.dataset.taskId = task.id;
+                        taskDot.style.cursor = 'pointer';
+                        tasksContainer.appendChild(taskDot);
+                    });
+                    
+                    dayElement.appendChild(tasksContainer);
+                }
+
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function getTasksForDay(day) {
+            return tasks.filter(task => {
+                const taskDate = new Date(task.dueDate);
+                return taskDate.getDate() === day && 
+                       taskDate.getMonth() === currentViewDate.getMonth() && 
+                       taskDate.getFullYear() === currentViewDate.getFullYear();
+            });
+        }
+
+        function changeMonth(direction) {
+            if (direction === 'prev') {
+                currentViewDate.setMonth(currentViewDate.getMonth() - 1);
+            } else if (direction === 'next') {
+                currentViewDate.setMonth(currentViewDate.getMonth() + 1);
+            }
+            
+            updateMonthHeaders();
+            renderTasks();
+            renderCalendar();
+        }
+
+        // Модальное окно функции
+        function showTaskModal(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            currentModalTask = task;
+            
+            // Заполняем модальное окно данными
+            document.getElementById('modalTaskTitle').textContent = task.title;
+            
+            const priorityText = {
+                'high': 'Высокий',
+                'medium': 'Средний',
+                'low': 'Низкий'
+            };
+            
+            const priorityBadge = document.getElementById('modalTaskPriority');
+            priorityBadge.textContent = priorityText[task.priority];
+            priorityBadge.className = `priority-badge ${task.priority}`;
+            
+            const dueDate = new Date(task.dueDate);
+            document.getElementById('modalTaskDate').textContent = dueDate.toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            
+            const statusElement = document.getElementById('modalTaskStatus');
+            const completeButton = document.getElementById('modalTaskComplete');
+            
+            if (task.completed) {
+                statusElement.textContent = 'Выполнено';
+                statusElement.style.color = 'var(--success)';
+                completeButton.textContent = 'Отметить как невыполненное';
+                completeButton.classList.add('completed');
+            } else {
+                statusElement.textContent = 'Не выполнено';
+                statusElement.style.color = 'var(--danger)';
+                completeButton.textContent = 'Отметить как выполненное';
+                completeButton.classList.remove('completed');
+            }
+            
+            // Показываем комментарий, если он есть
+            const commentItem = document.getElementById('modalTaskCommentItem');
+            const commentValue = document.getElementById('modalTaskComment');
+            
+            if (task.comment && task.comment.trim() !== '') {
+                commentValue.textContent = task.comment;
+                commentItem.style.display = 'flex';
+            } else {
+                commentItem.style.display = 'none';
+            }
+            
+            // Показываем модальное окно
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function hideTaskModal() {
+            document.getElementById('taskModal').classList.remove('active');
+            currentModalTask = null;
+        }
+
+        function toggleTaskCompletion() {
+            if (!currentModalTask) return;
+            
+            currentModalTask.completed = !currentModalTask.completed;
+            
+            // Обновляем задачи и календарь
+            renderTasks();
+            renderCalendar();
+            updateChart();
+            
+            // Обновляем модальное окно
+            showTaskModal(currentModalTask.id);
+        }
+
+        // Обработка чекбоксов
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('task-checkbox')) {
+                const taskId = parseInt(e.target.closest('.task-item').dataset.id);
+                const task = tasks.find(t => t.id === taskId);
+                
+                if (task) {
+                    task.completed = e.target.checked;
+                    renderTasks();
+                }
+            }
+        });
+
+        // Навигация календаря
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'prevMonth' || e.target.id === 'prevMonthDaily') {
+                changeMonth('prev');
+            }
+            if (e.target.id === 'nextMonth' || e.target.id === 'nextMonthDaily') {
+                changeMonth('next');
+            }
+            if (e.target.id === 'prevChartMonth') {
+                changeChartMonth('prev');
+            }
+            if (e.target.id === 'nextChartMonth') {
+                changeChartMonth('next');
+            }
+        });
+
+        // Клики по точкам задач в календаре
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('task-dot')) {
+                const taskId = parseInt(e.target.dataset.taskId);
+                showTaskModal(taskId);
+            }
+        });
+
+        // Закрытие модального окна
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'modalClose' || e.target.classList.contains('modal-overlay')) {
+                hideTaskModal();
+            }
+        });
+
+        // Кнопка изменения статуса задачи
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'modalTaskComplete') {
+                toggleTaskCompletion();
+            }
+        });
+
+        // Закрытие модального окна по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideTaskModal();
+            }
+        });
+
+        // Навигация между разделами
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'dailyPlanner') {
+                e.preventDefault();
+                document.getElementById('dailyDashboard').classList.remove('hidden');
+                document.getElementById('monthViewSection').classList.add('hidden');
+                
+                document.querySelectorAll('.sidebar-nav li').forEach(li => li.classList.remove('active'));
+                e.target.closest('li').classList.add('active');
+            }
+            
+            if (e.target.id === 'monthView') {
+                e.preventDefault();
+                document.getElementById('dailyDashboard').classList.add('hidden');
+                document.getElementById('monthViewSection').classList.remove('hidden');
+                
+                document.querySelectorAll('.sidebar-nav li').forEach(li => li.classList.remove('active'));
+                e.target.closest('li').classList.add('active');
+            }
+            
+            // Обработка кнопки Manage Tasks (работает при клике на кнопку или span внутри)
+            if (e.target.id === 'manageTasks' || e.target.closest('#manageTasks')) {
+                e.preventDefault();
+                window.location.href = 'task-manager.html';
+            }
+        });
+
+        // Обновление текущей даты
+        function updateCurrentDate() {
+            const currentDateElement = document.getElementById('currentDate');
+            if (currentDateElement) {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                currentDateElement.textContent = now.toLocaleDateString('ru-RU', options);
+            }
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCurrentDate();
+            loadTasks();
+        });
+
+        // Progress Chart Functions
+        let chartCanvas = null;
+        let chartCtx = null;
+
+        function initChart() {
+            chartCanvas = document.getElementById('progressChart');
+            chartCtx = chartCanvas.getContext('2d');
+            updateChartMonthHeader();
+            updateChart();
+        }
+
+        function updateChart() {
+            if (!chartCtx) return;
+
+            // Получаем задачи для текущего месяца диаграммы
+            const monthTasks = getTasksForMonth(currentChartDate);
+            const totalTasks = monthTasks.length;
+            const completedTasks = monthTasks.filter(task => task.completed).length;
+            const pendingTasks = totalTasks - completedTasks;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            // Обновляем статистику
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('pendingTasks').textContent = pendingTasks;
+            document.getElementById('chartPercentage').textContent = percentage + '%';
+
+            // Очищаем canvas
+            chartCtx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+
+            if (totalTasks === 0) {
+                // Рисуем пустой круг
+                drawEmptyCircle();
+                return;
+            }
+
+            // Рисуем круговую диаграмму
+            const centerX = chartCanvas.width / 2;
+            const centerY = chartCanvas.height / 2;
+            const radius = 80;
+            const lineWidth = 20;
+
+            // Настройки цветов
+            const completedColor = '#28a745';
+            const pendingColor = '#e9ecef';
+
+            // Рисуем фон (pending tasks)
+            chartCtx.beginPath();
+            chartCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            chartCtx.strokeStyle = pendingColor;
+            chartCtx.lineWidth = lineWidth;
+            chartCtx.stroke();
+
+            // Рисуем выполненную часть
+            if (completedTasks > 0) {
+                const completedAngle = (completedTasks / totalTasks) * 2 * Math.PI;
+                
+                chartCtx.beginPath();
+                chartCtx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + completedAngle);
+                chartCtx.strokeStyle = completedColor;
+                chartCtx.lineWidth = lineWidth;
+                chartCtx.lineCap = 'round';
+                chartCtx.stroke();
+            }
+        }
+
+        function drawEmptyCircle() {
+            const centerX = chartCanvas.width / 2;
+            const centerY = chartCanvas.height / 2;
+            const radius = 80;
+            const lineWidth = 20;
+
+            chartCtx.beginPath();
+            chartCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            chartCtx.strokeStyle = '#e9ecef';
+            chartCtx.lineWidth = lineWidth;
+            chartCtx.stroke();
+        }
+
+        function getTasksForMonth(date) {
+            return tasks.filter(task => {
+                const taskDate = new Date(task.dueDate);
+                return taskDate.getMonth() === date.getMonth() && 
+                       taskDate.getFullYear() === date.getFullYear();
+            });
+        }
+
+        function updateChartMonthHeader() {
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            
+            const monthName = monthNames[currentChartDate.getMonth()];
+            const year = currentChartDate.getFullYear();
+            document.getElementById('chartMonthYear').textContent = `${monthName} ${year}`;
+        }
+
+        function changeChartMonth(direction) {
+            if (direction === 'prev') {
+                currentChartDate.setMonth(currentChartDate.getMonth() - 1);
+            } else if (direction === 'next') {
+                currentChartDate.setMonth(currentChartDate.getMonth() + 1);
+            }
+            
+            updateChartMonthHeader();
+            updateChart();
+        }
+    </script>
+</body>
+</html>

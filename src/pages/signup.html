@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Do Your Best</title>
+    <!-- Подключение шрифтов -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Общий CSS -->
+<style>
+  :root {
+    --primary: #FF554A;
+    --text: #000000;
+    --bg: #FFFFFF;
+  }
+  body {
+    font-family: 'Kantumruy Pro', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 20px;
+  }
+  .signup-container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+  }
+  .branding {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .logo {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .development-message {
+    background: #f8f9fa;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .development-message h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+  }
+  .development-message p {
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Kantumruy Pro', sans-serif;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="branding">
+            <h1 class="logo">do your best</h1>
+        </div>
+        
+        <div class="development-message">
+            <h2>🚧 В разработке</h2>
+            <p>Страница регистрации находится в разработке. В данный момент доступен только вход для существующих пользователей.</p>
+            <a href="login.html" class="btn-primary">Вернуться к входу</a>
+        </div>
+    </div>
+
+    <script>
+        // Автоматическое перенаправление через 3 секунды
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 3000);
+    </script>
+</body>
+</html>

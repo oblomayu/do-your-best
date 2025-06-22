@@ -1,0 +1,55 @@
+:root {
+    --primary-color: #FF554A;
+    --text-color: #000000;
+    --bg-color: #FFFFFF;
+    --light-gray: #F5F5F5;
+    --medium-gray: #D9D9D9;
+    --dark-gray: #333333;
+    --input-bg: #FFFBFB;
+    --input-border: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Kantumruy Pro', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    background: none;
+}
+
+input, textarea {
+    font-family: inherit;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    padding: 0.8rem;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
